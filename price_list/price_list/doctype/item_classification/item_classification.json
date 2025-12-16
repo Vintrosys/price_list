@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:item_classification",
+ "creation": "2025-12-16 15:37:11.465019",
+ "default_view": "List",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_classification",
+  "base_markup",
+  "image"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "item_classification",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Classification",
+   "unique": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "base_markup",
+   "fieldtype": "Percent",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Base Markup Percentage"
+  },
+  {
+   "default": "0",
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Image"
+  }
+ ],
+ "icon": "fa fa-certificate",
+ "image_field": "image",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-16 15:50:19.754360",
+ "modified_by": "Administrator",
+ "module": "Price List",
+ "name": "Item Classification",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "show_name_in_global_search": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
