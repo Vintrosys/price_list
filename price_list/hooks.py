@@ -213,3 +213,8 @@ app_license = "MIT"
 # auth_hooks = [
 # 	"price_list.auth.validate"
 # ]
+fixtures = [
+    {
+        "dt": "Server Script",
+    }
+]
