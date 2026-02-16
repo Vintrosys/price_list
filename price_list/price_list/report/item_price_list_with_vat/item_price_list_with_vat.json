@@ -1,6 +1,19 @@
 {
  "add_total_row": 0,
- "columns": [],
+ "columns": [
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "width": 0
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "width": 0
+  }
+ ],
  "creation": "2026-01-29 15:19:39.265027",
  "disable_prepared_report": 1,
  "disabled": 0,
@@ -10,13 +23,13 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "",
- "modified": "2026-02-02 21:21:18.360363",
+ "modified": "2026-02-16 19:23:09.922248",
  "modified_by": "Administrator",
  "module": "Price List",
  "name": "Item Price List With VAT",
  "owner": "Administrator",
  "prepared_report": 0,
- "query": "SELECT\n    ip.item_code AS \"Item:Link/Item:140\",\n    ip.reference AS \"Reference:Link/Purchase Invoice:180\",\n\n    COALESCE(prev_ip.price_list_rate, 0) AS \"Previous Selling Price:Currency:140\",\n    COALESCE(valuation.last_purchase_rate, 0) AS \"Valuation Used:Currency:120\",\n\n    COALESCE(iclass.base_markup, 0) AS \"Classification Markup:Float:120\",\n    COALESCE(ig.custom_base_markup, 0) AS \"Group Markup:Float:120\",\n    COALESCE(icat.base_markup, 1) AS \"Category Factor:Float:120\",\n    COALESCE(ipf.base_markup, 1) AS \"Performance Factor:Float:120\",\n\n    ROUND(\n        (\n            (COALESCE(iclass.base_markup,0)\n            + COALESCE(ig.custom_base_markup,0))\n            * COALESCE(icat.base_markup,1)\n            * COALESCE(ipf.base_markup,1)\n        ) / 100,\n        2\n    ) AS \"Final Markup Percent:Float:120\",\n\n    COALESCE(icat.vat_rate, 0) AS \"VAT Rate:Float:100\",\n\n    ip.price_list_rate AS \"Price With VAT:Currency:140\",\n\n    ROUND(\n        (\n            (ip.price_list_rate / NULLIF(COALESCE(valuation.last_purchase_rate,1),0)) - 1\n        ) * 100,\n        2\n    ) AS \"Total Increase Percent:Float:120\",\n\n    ip.modified AS \"Last Updated:Datetime:160\"\n\nFROM `tabItem Price` ip\nINNER JOIN `tabItem` i ON i.name = ip.item_code\nLEFT JOIN `tabItem Classification` iclass ON iclass.name = i.custom_item_classification\nLEFT JOIN `tabItem Group` ig ON ig.name = i.item_group\nLEFT JOIN `tabItem Category` icat ON icat.name = i.custom_item_category\nLEFT JOIN `tabProduct Performance` ipf ON ipf.name = i.custom_product_performance\nLEFT JOIN `tabItem Price` prev_ip\n    ON prev_ip.item_code = ip.item_code\n    AND prev_ip.price_list = ip.price_list\n    AND prev_ip.modified < ip.modified\nLEFT JOIN `tabItem` valuation ON valuation.name = ip.item_code\n\nWHERE ip.price_list = 'Standard Selling'\nORDER BY ip.modified DESC;\n",
+ "query": "SELECT\n    ip.item_code AS \"Item:Link/Item:140\",\n    ip.reference AS \"Reference:Link/Purchase Invoice:180\",\n\n    COALESCE(prev_ip.price_list_rate, 0) AS \"Previous Selling Price:Currency:140\",\n    COALESCE(valuation.last_purchase_rate, 0) AS \"Valuation Used:Currency:120\",\n\n    COALESCE(iclass.base_markup, 0) AS \"Classification Markup:Float:120\",\n    COALESCE(ig.custom_base_markup, 0) AS \"Group Markup:Float:120\",\n    COALESCE(icat.base_markup, 1) AS \"Category Factor:Float:120\",\n    COALESCE(ipf.base_markup, 1) AS \"Performance Factor:Float:120\",\n\n    ROUND(\n        (\n            (COALESCE(iclass.base_markup,0)\n            + COALESCE(ig.custom_base_markup,0))\n            * COALESCE(icat.base_markup,1)\n            * COALESCE(ipf.base_markup,1)\n        ) / 100,\n        2\n    ) AS \"Final Markup Percent:Float:120\",\n\n    COALESCE(icat.vat_rate, 0) AS \"VAT Rate:Float:100\",\n\n    ip.price_list_rate AS \"Price With VAT:Currency:140\",\n\n    ROUND(\n        (\n            (ip.price_list_rate / NULLIF(COALESCE(valuation.last_purchase_rate,1),0)) - 1\n        ) * 100,\n        2\n    ) AS \"Total Increase Percent:Float:120\",\n\n    ip.modified AS \"Last Updated:Datetime:160\"\n\nFROM `tabItem Price` ip\nINNER JOIN `tabItem` i ON i.name = ip.item_code\nLEFT JOIN `tabItem Classification` iclass ON iclass.name = i.custom_item_classification\nLEFT JOIN `tabItem Group` ig ON ig.name = i.item_group\nLEFT JOIN `tabItem Category` icat ON icat.name = i.custom_item_category\nLEFT JOIN `tabProduct Performance` ipf ON ipf.name = i.custom_product_performance\nLEFT JOIN `tabItem Price` prev_ip\n    ON prev_ip.item_code = ip.item_code\n    AND prev_ip.price_list = ip.price_list\n    AND prev_ip.modified < ip.modified\nLEFT JOIN `tabItem` valuation ON valuation.name = ip.item_code\n\n\nWHERE ip.price_list = 'Standard Selling'\n\nAND ip.valid_from BETWEEN\n    IFNULL(%(from_date)s, DATE_SUB(CURDATE(), INTERVAL 1 MONTH))\n    AND\n    IFNULL(%(to_date)s, CURDATE())\n\nORDER BY ip.valid_from DESC;\n\n\n\n\n\n\n",
  "ref_doctype": "Item Price",
  "report_name": "Item Price List With VAT",
  "report_type": "Query Report",
